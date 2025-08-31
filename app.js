@@ -23,11 +23,12 @@ class Enemy {
 
 let enemies = []
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 15; i++) {
     let enemy1 = new Enemy() 
     enemies.push(enemy1)
 }
-
+let game_over = false
+let score = 0
 
 function gameLoop() { // running 60x per second
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -38,22 +39,42 @@ function gameLoop() { // running 60x per second
         ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2)
         ctx.fill()
         e.x -= 15
+
+        // Teleporting back
         if (e.x < 0) {
             e.x = canvas.width + Math.random() * 500
+            e.y = canvas.height * Math.random()
         }
-
+        // and &&
+        // or ||
+        // Collision code
         let dx = x - e.x
         let dy = y - e.y
         let distance = Math.sqrt(dx * dx + dy * dy)
+        // If player gets hit
         if (distance - 25 - e.size <= 0) {
-            e.size = 0
+            game_over = true
         }
     })
 
-    ctx.fillStyle = "red"
-    ctx.beginPath()
-    ctx.arc(x, y, 25, 0, Math.PI * 2)
-    ctx.fill()
+    // Drawing Score Text
+    ctx.font = "bold 30px serif"
+    ctx.fillStyle = "black"
+    ctx.fillText("Score: " + score, canvas.width - 200, 25)
+
+    if (game_over == true) {
+        // draw GAME OVER text
+        ctx.font = "bold 100px serif"
+        ctx.fillStyle = "red"
+        ctx.fillText("GAME OVER", 500, 300)
+    } else {
+        score++
+        // Drawing Player
+        ctx.fillStyle = "red"
+        ctx.beginPath()
+        ctx.arc(x, y, 25, 0, Math.PI * 2)
+        ctx.fill()
+    }
 
     if (up) {
         y -= 5

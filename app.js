@@ -4,12 +4,6 @@ const ctx = canvas.getContext("2d")
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
-ctx.fillStyle = "green"
-ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-ctx.fillStyle = "blue"
-ctx.fillRect(300, 400, 150, 350)
-
 let x = 100
 let y = canvas.height / 2
 let up = false
@@ -35,7 +29,7 @@ for (let i = 0; i < 10; i++) {
 }
 
 
-function gameLoop() {
+function gameLoop() { // running 60x per second
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     enemies.forEach(e => {
@@ -46,6 +40,13 @@ function gameLoop() {
         e.x -= 15
         if (e.x < 0) {
             e.x = canvas.width + Math.random() * 500
+        }
+
+        let dx = x - e.x
+        let dy = y - e.y
+        let distance = Math.sqrt(dx * dx + dy * dy)
+        if (distance - 25 - e.size <= 0) {
+            e.size = 0
         }
     })
 
